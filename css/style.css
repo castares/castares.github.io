@@ -1,0 +1,9 @@
+body {
+  font: 20px Helvetica, Verdana, Arial, sans-serif;
+  background-color: whitesmoke;
+  color: darkslategrey;
+  border: 1px;
+  margin: 10px;
+  padding: 10%;
+  text-align: center center;
+}

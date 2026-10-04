@@ -1,0 +1,17 @@
+---
+import Base from "../../../layouts/Base.astro";
+import NoteList from "../../../components/NoteList.astro";
+import { getNotes, getTags, type Tag } from "../../../lib/garden";
+
+export async function getStaticPaths() {
+  return getTags(await getNotes()).map((tag) => ({ params: { tag: tag.slug }, props: { tag } }));
+}
+
+const { tag } = Astro.props as { tag: Tag };
+---
+
+<Base title={`#${tag.label}`}>
+  <h1>#{tag.label}</h1>
+  <NoteList notes={tag.notes} />
+  <p><a href="/garden/">← All notes</a></p>
+</Base>

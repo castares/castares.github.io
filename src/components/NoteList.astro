@@ -1,0 +1,20 @@
+---
+import Maturity from "./Maturity.astro";
+import { formatDate, type Note } from "../lib/garden";
+
+const { notes } = Astro.props as { notes: Note[] };
+---
+
+<ul class="note-list">
+  {
+    notes.map((note) => (
+      <li>
+        <a href={`/garden/${note.slug}/`}>{note.title}</a>
+        <span class="meta">
+          <Maturity maturity={note.maturity} />
+          <time datetime={note.tended.toISOString()}>{formatDate(note.tended)}</time>
+        </span>
+      </li>
+    ))
+  }
+</ul>

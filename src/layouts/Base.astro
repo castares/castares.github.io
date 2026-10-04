@@ -1,0 +1,43 @@
+---
+import "../styles/global.css";
+import { profile } from "../profile";
+
+interface Props {
+  title?: string;
+  description?: string;
+}
+
+const { title, description = `${profile.name}, ${profile.headline}.` } = Astro.props;
+const pageTitle = title ? `${title} · ${profile.name}` : profile.name;
+const path = Astro.url.pathname;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{pageTitle}</title>
+    <meta name="description" content={description} />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="canonical" href={new URL(path, Astro.site)} />
+    <link rel="alternate" type="application/rss+xml" title={`${profile.name} · Garden`} href="/rss.xml" />
+    <meta property="og:title" content={pageTitle} />
+    <meta property="og:description" content={description} />
+  </head>
+  <body>
+    <header class="site-header">
+      <a href="/" class="site-name">{profile.name}</a>
+      <nav>
+        <a href="/garden/" aria-current={path.startsWith("/garden/") ? "page" : undefined}>Garden</a>
+        <a href="/rss.xml">RSS</a>
+      </nav>
+    </header>
+    <main>
+      <slot />
+    </main>
+    <footer class="site-footer">
+      {profile.links.map((link) => <a href={link.href} rel="me">{link.label}</a>)}
+    </footer>
+  </body>
+</html>

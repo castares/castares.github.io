@@ -1,0 +1,25 @@
+---
+import Base from "../layouts/Base.astro";
+import NoteList from "../components/NoteList.astro";
+import { getNotes } from "../lib/garden";
+import { profile } from "../profile";
+
+const recent = (await getNotes()).slice(0, 5);
+---
+
+<Base>
+  <section class="intro">
+    <h1>{profile.name}</h1>
+    <p class="headline">{profile.headline} · {profile.location}</p>
+    {profile.bio.map((paragraph) => <p>{paragraph}</p>)}
+    <ul class="profile-links">
+      {profile.links.map((link) => <li><a href={link.href} rel="me">{link.label}</a></li>)}
+    </ul>
+  </section>
+
+  <section>
+    <h2>Recently tended</h2>
+    {recent.length > 0 ? <NoteList notes={recent} /> : <p class="meta">Nothing planted yet.</p>}
+    <p><a href="/garden/">Wander the Garden →</a></p>
+  </section>
+</Base>

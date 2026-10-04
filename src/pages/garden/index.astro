@@ -1,0 +1,31 @@
+---
+import Base from "../../layouts/Base.astro";
+import NoteList from "../../components/NoteList.astro";
+import { getNotes, getTags } from "../../lib/garden";
+
+const notes = await getNotes();
+const tags = getTags(notes);
+---
+
+<Base title="Garden" description="Notes in every state of growth, most recently tended first.">
+  <h1>Garden</h1>
+  <p class="lede">
+    Notes in every state of growth: 🌱 seedlings are raw thoughts, 🌿 budding notes are taking shape, 🌳 evergreens are
+    settled. Everything here may change.
+  </p>
+
+  {
+    tags.length > 0 && (
+      <ul class="tags">
+        {tags.map((tag) => (
+          <li>
+            <a href={`/garden/tags/${tag.slug}/`}>#{tag.label}</a> <span class="meta">{tag.notes.length}</span>
+          </li>
+        ))}
+      </ul>
+    )
+  }
+
+  <h2>Recently tended</h2>
+  <NoteList notes={notes} />
+</Base>

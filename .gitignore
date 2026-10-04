@@ -1,0 +1,9 @@
+node_modules/
+dist/
+.astro/
+
+# Obsidian per-device state
+garden/.obsidian/workspace*.json
+garden/.obsidian/cache
+garden/.trash/
+.DS_Store

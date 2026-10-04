@@ -1,0 +1,72 @@
+---
+import { render } from "astro:content";
+import Base from "../../layouts/Base.astro";
+import Maturity from "../../components/Maturity.astro";
+import { backlinksTo, formatDate, getNotes, tagSlug, wasTended, type Note } from "../../lib/garden";
+import { redirectSlugs } from "../../lib/vault";
+
+export async function getStaticPaths() {
+  const notes = await getNotes();
+  // Aliases keep old URLs working after a Note is renamed.
+  const redirects = notes.flatMap((note) =>
+    redirectSlugs(note.slug, note.aliases).map((slug) => ({ params: { slug }, props: { redirectTo: note.slug } })),
+  );
+  return [...notes.map((note) => ({ params: { slug: note.slug }, props: { note } })), ...redirects];
+}
+
+type Props = { note: Note } | { redirectTo: string };
+const props = Astro.props;
+if ("redirectTo" in props) return Astro.redirect(`/garden/${props.redirectTo}/`, 301);
+const { note } = props;
+
+const { Content } = await render(note.entry);
+const backlinks = backlinksTo(note, await getNotes());
+---
+
+<Base title={note.title} description={note.description}>
+  <article class="note">
+    <header>
+      <h1>{note.title}</h1>
+      <p class="meta">
+        <Maturity maturity={note.maturity} />{" "}
+        · Planted <time datetime={note.planted.toISOString()}>{formatDate(note.planted)}</time>
+        {
+          wasTended(note) && (
+            <>
+              · Tended <time datetime={note.tended.toISOString()}>{formatDate(note.tended)}</time>
+            </>
+          )
+        }
+      </p>
+      {
+        note.tags.length > 0 && (
+          <ul class="tags">
+            {note.tags.map((tag) => (
+              <li>
+                <a href={`/garden/tags/${tagSlug(tag)}/`}>#{tag}</a>
+              </li>
+            ))}
+          </ul>
+        )
+      }
+    </header>
+    <div class="prose">
+      <Content />
+    </div>
+  </article>
+
+  {
+    backlinks.length > 0 && (
+      <aside class="backlinks">
+        <h2>Linked from</h2>
+        <ul>
+          {backlinks.map((other) => (
+            <li>
+              <a href={`/garden/${other.slug}/`}>{other.title}</a>
+            </li>
+          ))}
+        </ul>
+      </aside>
+    )
+  }
+</Base>

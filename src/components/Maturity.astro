@@ -1,0 +1,8 @@
+---
+import type { Maturity } from "../lib/garden";
+
+const symbols: Record<Maturity, string> = { seedling: "🌱", budding: "🌿", evergreen: "🌳" };
+const { maturity } = Astro.props as { maturity: Maturity };
+---
+
+<span class="maturity" title={maturity}>{symbols[maturity]} <span class="maturity-label">{maturity}</span></span>

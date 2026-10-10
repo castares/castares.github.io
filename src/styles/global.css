@@ -162,3 +162,44 @@ img {
   padding-top: 1rem;
   border-top: 1px solid var(--rule);
 }
+
+.callout {
+  margin: 1.5rem 0;
+  padding: 0.75rem 1rem;
+  border-left: 3px solid var(--callout, var(--accent));
+  background: color-mix(in srgb, var(--callout, var(--accent)) 8%, transparent);
+  border-radius: 0 6px 6px 0;
+}
+
+.callout-title {
+  font-weight: 600;
+  color: var(--callout, var(--accent));
+}
+
+.callout > :last-child {
+  margin-bottom: 0;
+}
+
+.callout > p:first-of-type:not(.callout-title) {
+  margin-top: 0.5rem;
+}
+
+summary.callout-title {
+  cursor: pointer;
+}
+
+.callout:is([data-callout="warning"], [data-callout="caution"], [data-callout="attention"]) {
+  --callout: #c27a12;
+}
+
+.callout:is([data-callout="danger"], [data-callout="error"], [data-callout="bug"], [data-callout="failure"], [data-callout="fail"]) {
+  --callout: #c2412d;
+}
+
+.callout:is([data-callout="question"], [data-callout="help"], [data-callout="faq"], [data-callout="example"]) {
+  --callout: #7a5cc2;
+}
+
+.callout:is([data-callout="quote"], [data-callout="cite"]) {
+  --callout: var(--muted);
+}

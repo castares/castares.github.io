@@ -20,6 +20,7 @@ planted: 2026-10-01  # override the git-derived first-published date
 ```
 
 - `[[Note]]`, `[[Note|label]]` and `[[Note#Heading]]` link Notes; links to Notes that don't exist yet render as dimmed Unplanted Links.
+- Obsidian callouts (`> [!note] Title`, collapsible with `[!note]-` or `[!note]+`) render as styled boxes.
 - `![[image.png]]` embeds a file from `garden/attachments/`, where Obsidian puts pasted images.
 - Files and folders starting with `_` or `.` (e.g. `_templates/`) are never published.
 
